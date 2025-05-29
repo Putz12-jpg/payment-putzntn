@@ -68,17 +68,18 @@
       opacity: 0.8;
     }
 
+    /* Modal QRIS */
     .modal {
       display: none;
       position: fixed;
       z-index: 1000;
-      padding-top: 50px;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(5px);
+      background-color: rgba(0, 0, 0, 0.6);
+      animation: fadeIn 0.3s ease-in-out;
     }
 
     .modal-content {
@@ -86,6 +87,8 @@
       display: block;
       width: 80%;
       max-width: 400px;
+      animation: zoomIn 0.4s ease;
+      border-radius: 12px;
     }
 
     .close {
@@ -96,6 +99,22 @@
       font-size: 30px;
       font-weight: bold;
       cursor: pointer;
+    }
+
+    @keyframes zoomIn {
+      0% {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0}
+      to {opacity: 1}
     }
 
     textarea {
@@ -176,7 +195,7 @@
       <label for="bukti">File bukti transfer (jpg/png):</label><br />
       <input type="file" id="bukti" accept="image/*" /><br /><br />
       <label for="catatan">Catatan (opsional):</label>
-      <textarea id="catatan" rows="2" placeholder="Apalaa, Seterah Kau Pukimak"></textarea>
+      <textarea id="catatan" rows="2" placeholder="via DANA"></textarea>
       <button class="send-btn" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
     </div>
   </div>
@@ -235,8 +254,8 @@
       const catatan = document.getElementById("catatan").value.trim();
       const fileName = fileInput.files.length > 0 ? fileInput.files[0].name : "Belum dipilih";
 
-      let pesan = `Halo, Admin saya sudah transfer, Ini bukti teranfer saya.\nBukti: ${fileName}\nCatatan: ${catatan || '-'}`;
-      let nomorTujuan = '628895485706'; // ← GANTI dengan nomor admin tanpa plus
+      let pesan = `Halo, admin saya sudah transfer.\nBukti: ${fileName}\nCatatan: ${catatan || '-'}`;
+      let nomorTujuan = '628895485706'; // ← GANTI ke nomor WA admin
 
       let url = `https://wa.me/${nomorTujuan}?text=${encodeURIComponent(pesan)}`;
       window.open(url, '_blank');
